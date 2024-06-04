@@ -1,34 +1,57 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Param, Delete } from '@nestjs/common';
+
 import { AuthenticationService } from './authentication.service';
+
 import { CreateAuthenticationDto } from './dto/create-authentication.dto';
-import { UpdateAuthenticationDto } from './dto/update-authentication.dto';
+
+import { Session, User } from '@prisma/client';
+import { ILoginResponse } from './dto/login-response-dto';
 
 @Controller('authentication')
 export class AuthenticationController {
-  constructor(private readonly authenticationService: AuthenticationService) {}
+  constructor(private readonly authService: AuthenticationService) { }
 
-  @Post()
-  create(@Body() createAuthenticationDto: CreateAuthenticationDto) {
-    return this.authenticationService.create(createAuthenticationDto);
+  @Post('register')
+  async register(@Body() createAuthDto: CreateAuthenticationDto): Promise<CreateAuthenticationDto> {
+    try {
+      return await this.authService.createUser(createAuthDto);
+    } catch (error) {
+      throw new Error(error);
+    }
   }
 
-  @Get()
-  findAll() {
-    return this.authenticationService.findAll();
+  @Post('login')
+  async login(@Body('email') email: string, @Body('password') password: string): Promise<ILoginResponse> {
+    return await this.authService.login(email, password);
   }
 
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.authenticationService.findOne(+id);
+  @Post('validate-token')
+  async validateToken(@Body('token') token: string): Promise<{ isValid: boolean }> {
+    try {
+      const user = await this.authService.validateAccessToken(token);
+      return { isValid: !!user };
+    } catch (error) {
+      return { isValid: false };
+    }
   }
 
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateAuthenticationDto: UpdateAuthenticationDto) {
-    return this.authenticationService.update(+id, updateAuthenticationDto);
+  @Get('users')
+  async getUsers(): Promise<User[]> {
+    return await this.authService.getUsers();
   }
 
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.authenticationService.remove(+id);
+  @Get('userById/:id')
+  async getUserById(@Param('id') id: string): Promise<User> {
+    return await this.authService.getUserById(+id);
+  }
+
+  @Get('userByEmail/:email')
+  async getUserByEmail(@Param('email') email: string): Promise<User> {
+    return await this.authService.getUserByEmail(email);
+  }
+
+  @Delete('logout')
+  async logout(@Body() refreshToken: string): Promise<void> {
+    await this.authService.logout(refreshToken);
   }
 }

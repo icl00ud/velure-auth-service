@@ -1,0 +1,14 @@
+{
+	"folders": [
+		{
+			"path": "../../.."
+		},
+		{
+			"path": "../../../../velure-product-service"
+		},
+		{
+			"path": "../../../../velure-ui-service"
+		}
+	],
+	"settings": {}
+}

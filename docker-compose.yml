@@ -9,8 +9,13 @@ services:
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
     volumes:
       - postgres_data:/var/lib/postgresql/data
+    networks:
+      - traefik_network
     ports:
       - "5432:5432"
+
+networks:
+  traefik_network:
       
 volumes:
   postgres_data:

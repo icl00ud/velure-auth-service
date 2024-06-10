@@ -25,7 +25,7 @@ export class AuthenticationService {
       throw new BadRequestException('User already exists');
     }
 
-    let userData: CreateAuthenticationDto = data;
+    const userData: CreateAuthenticationDto = data;
     const hashedPassword = await bcrypt.hash(data.password, this.saltRounds);
     userData.password = hashedPassword;
 
@@ -36,7 +36,7 @@ export class AuthenticationService {
   async getUsers(): Promise<User[]> {
     const users = await this.authenticationRepository.getUsers();
 
-    for (let user of users) {
+    for (const user of users) {
       delete user.password;
     }
 
@@ -72,7 +72,10 @@ export class AuthenticationService {
 
     // Atualização da sessão ao fazer login
     const session = await this.updateOrCreateSession(user.id.toString());
-    return { accessToken: session.accessToken, refreshToken: session.refreshToken };
+    return {
+      accessToken: session.accessToken,
+      refreshToken: session.refreshToken,
+    };
   }
 
   async logout(refreshToken: string): Promise<void> {
@@ -87,14 +90,15 @@ export class AuthenticationService {
       this.generateRefreshToken(user),
     ]);
 
-    let session = await this.authenticationRepository.getSessionByUserId(parseInt(userId));
+    let session = await this.authenticationRepository.getSessionByUserId(+userId);
+
     if (session) {
       session.accessToken = accessToken;
       session.refreshToken = refreshToken;
       session.expiresAt = new Date(Date.now() + parseInt(sessionExpiresIn, 10));
       session = await this.authenticationRepository.updateSession(session.id, session);
     } else {
-      let sessionData: Prisma.SessionCreateInput = {
+      const sessionData: Prisma.SessionCreateInput = {
         accessToken,
         refreshToken,
         expiresAt: new Date(Date.now() + parseInt(sessionExpiresIn, 10)),
@@ -135,6 +139,6 @@ export class AuthenticationService {
 
     const payload = { userId: user.id, email: user.email, role: user.name };
     const secret = this.secret + refreshSecret;
-    return this.jwtService.sign(payload, { secret, expiresIn: refreshExpiresIn });
+    return this.jwtService.sign(payload, {secret, expiresIn: refreshExpiresIn });
   }
 }

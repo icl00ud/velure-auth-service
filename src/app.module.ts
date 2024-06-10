@@ -7,9 +7,9 @@ import configurationConfig from './config/configuration.config';
   imports: [
     ConfigModule.forRoot({
       load: [configurationConfig],
-      isGlobal: true
+      isGlobal: true,
     }),
-    AuthenticationModule
+    AuthenticationModule,
   ],
   controllers: [],
   providers: [],

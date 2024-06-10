@@ -1,4 +1,10 @@
-import { PasswordReset, Prisma, PrismaClient, Session, User } from '@prisma/client';
+import {
+  PasswordReset,
+  Prisma,
+  PrismaClient,
+  Session,
+  User,
+} from '@prisma/client';
 
 const prisma = new PrismaClient();
 
@@ -37,7 +43,10 @@ export class AuthenticationRepository {
     }
   }
 
-  async updateUser(id: number, data: Prisma.UserUpdateInput): Promise<User | null> {
+  async updateUser(
+    id: number,
+    data: Prisma.UserUpdateInput,
+  ): Promise<User | null> {
     return prisma.user.update({ where: { id }, data });
   }
 
@@ -63,13 +72,18 @@ export class AuthenticationRepository {
     });
   }
 
-  async updateSession(id: number, data: Prisma.SessionUpdateInput): Promise<Session> {
+  async updateSession(
+    id: number,
+    data: Prisma.SessionUpdateInput,
+  ): Promise<Session> {
     return prisma.session.update({ where: { id }, data });
   }
 
   // Token of Password Reset
 
-  async createPasswordReset(data: Prisma.PasswordResetCreateInput): Promise<PasswordReset> {
+  async createPasswordReset(
+    data: Prisma.PasswordResetCreateInput,
+  ): Promise<PasswordReset> {
     return prisma.passwordReset.create({ data });
   }
 

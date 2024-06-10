@@ -4,15 +4,17 @@ import { AuthenticationService } from './authentication.service';
 
 import { CreateAuthenticationDto } from './dto/create-authentication.dto';
 
-import { Session, User } from '@prisma/client';
+import { User } from '@prisma/client';
 import { ILoginResponse } from './dto/login-response-dto';
 
 @Controller('authentication')
 export class AuthenticationController {
-  constructor(private readonly authService: AuthenticationService) { }
+  constructor(private readonly authService: AuthenticationService) {}
 
   @Post('register')
-  async register(@Body() createAuthDto: CreateAuthenticationDto): Promise<CreateAuthenticationDto> {
+  async register(
+    @Body() createAuthDto: CreateAuthenticationDto,
+  ): Promise<CreateAuthenticationDto> {
     try {
       return await this.authService.createUser(createAuthDto);
     } catch (error) {
@@ -21,12 +23,17 @@ export class AuthenticationController {
   }
 
   @Post('login')
-  async login(@Body('email') email: string, @Body('password') password: string): Promise<ILoginResponse> {
+  async login(
+    @Body('email') email: string,
+    @Body('password') password: string,
+  ): Promise<ILoginResponse> {
     return await this.authService.login(email, password);
   }
 
   @Post('validate-token')
-  async validateToken(@Body('token') token: string): Promise<{ isValid: boolean }> {
+  async validateToken(
+    @Body('token') token: string,
+  ): Promise<{ isValid: boolean }> {
     try {
       const user = await this.authService.validateAccessToken(token);
       return { isValid: !!user };

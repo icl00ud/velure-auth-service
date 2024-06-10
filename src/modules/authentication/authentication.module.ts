@@ -5,13 +5,8 @@ import { AuthenticationRepository } from './authentication.repository';
 import { JwtModule } from '@nestjs/jwt';
 
 @Module({
-  imports: [
-    JwtModule
-  ],
+  imports: [JwtModule],
   controllers: [AuthenticationController],
-  providers: [
-    AuthenticationService,
-    AuthenticationRepository
-  ],
+  providers: [AuthenticationService, AuthenticationRepository],
 })
 export class AuthenticationModule {}

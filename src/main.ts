@@ -8,9 +8,11 @@ async function bootstrap() {
   const ORIGIN_UI = process.env.ORIGIN_UI || 'http://localhost:4200';
 
   const app = await NestFactory.create(AppModule);
-  app.enableCors( { origin: ORIGIN_UI } );
+  app.enableCors({ origin: ORIGIN_UI });
 
-  await app.listen(PORT, () => console.log('Server is listening on port', PORT));
+  await app.listen(PORT, () =>
+    console.log('Server is listening on port', PORT),
+  );
 
   if (module.hot) {
     module.hot.accept();

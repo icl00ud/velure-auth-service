@@ -9,4 +9,4 @@ import { JwtModule } from '@nestjs/jwt';
   controllers: [AuthenticationController],
   providers: [AuthenticationService, AuthenticationRepository],
 })
-export class AuthenticationModule {}
+export class AuthenticationModule { }

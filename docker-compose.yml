@@ -15,7 +15,7 @@ services:
       - "5432:5432"
 
 networks:
-  traefik_network:
+  postgres_auth_network:
       
 volumes:
-  postgres_data:
+  postgres_auth_data:

@@ -10,7 +10,7 @@ services:
     volumes:
       - postgres_data:/var/lib/postgresql/data
     networks:
-      - traefik_network
+      - postgres_auth_network
     ports:
       - "5432:5432"
 

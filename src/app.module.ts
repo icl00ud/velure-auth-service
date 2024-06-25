@@ -2,6 +2,7 @@ import { Module } from '@nestjs/common';
 import { AuthenticationModule } from './modules/authentication/authentication.module';
 import { ConfigModule } from '@nestjs/config';
 import configurationConfig from './config/configuration.config';
+import { PrometheusModule } from '@willsoto/nestjs-prometheus';
 
 @Module({
   imports: [
@@ -10,6 +11,9 @@ import configurationConfig from './config/configuration.config';
       isGlobal: true,
     }),
     AuthenticationModule,
+    PrometheusModule.register({
+      path: "/auth-metrics"
+    })
   ],
   controllers: [],
   providers: [],

@@ -11,16 +11,19 @@ COPY . .
 
 RUN npm run build
 
-
 # Estágio de produção
 FROM node:alpine
 
 WORKDIR /app
 
+COPY ./prisma /app/
+COPY ./.env /app/
 COPY --from=build /app/dist ./dist
 COPY --from=build /app/node_modules ./node_modules
 COPY --from=build /app/package.json ./
 
-EXPOSE 3000
+RUN npm install prisma --omit=dev
 
-CMD ["node", "dist/main"]
+ENV PATH=/app/node_modules/.bin:$PATH
+
+EXPOSE 3000

@@ -14,6 +14,20 @@ services:
     ports:
       - "5432:5432"
 
+  velure-auth-service:
+    build: .
+    container_name: velure-auth-service
+    restart: on-failure:3
+    env_file:
+      - .env
+    networks:
+      - postgres_auth_network
+    ports:
+      - "${APP_PORT}:${APP_PORT}"
+    depends_on:
+      - postgres
+    command: sh -c "prisma migrate dev && prisma generate && node dist/main"
+      
 networks:
   postgres_auth_network:
       

@@ -25,5 +25,3 @@ COPY --from=build /app/package.json ./
 RUN npm install prisma --omit=dev
 
 ENV PATH=/app/node_modules/.bin:$PATH
-
-EXPOSE 3000

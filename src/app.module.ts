@@ -12,7 +12,7 @@ import { PrometheusModule } from '@willsoto/nestjs-prometheus';
     }),
     AuthenticationModule,
     PrometheusModule.register({
-      path: "/auth-metrics"
+      path: "/authentication/authMetrics"
     })
   ],
   controllers: [],

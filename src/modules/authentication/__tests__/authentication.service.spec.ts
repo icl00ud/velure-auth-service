@@ -2,7 +2,7 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { AuthenticationService } from '../authentication.service';
 import { AuthenticationRepository } from '../authentication.repository';
 import { JwtService } from '@nestjs/jwt';
-import { BadRequestException, ConflictException } from '@nestjs/common';
+import { ConflictException } from '@nestjs/common';
 import * as bcrypt from 'bcrypt';
 import { CreateAuthenticationDto } from '../dto/create-authentication.dto';
 import { Session, User } from '@prisma/client';
